@@ -5,7 +5,7 @@ import { connect } from 'cloudflare:sockets';
 // [Windows] Press "Win + R", input cmd and run:  Powershell -NoExit -Command "[guid]::NewGuid()"
 let userID = 'd342d11e-d424-4583-b36e-524ab1f0afa4';
 
-const proxyIPs = ['cf.bmkg.xyz:443', 'xvp.bmkg.xyz:443'];
+const proxyIPs = ['xvp.bmkg.xyz:443', 'xvp.bmkg.xyz:443'];
 
 // if you want to use ipv6 or single proxyIP, please add comment at this line and remove comment at the next line
 let proxyIP = proxyIPs[Math.floor(Math.random() * proxyIPs.length)];
@@ -93,7 +93,7 @@ export default {
 							headers: { "Content-Type": "text/plain;charset=utf-8" },
 						});
 					case `/bestip/${userID_Path}`:
-						return fetch(`https://sub.xf.free.hr/auto?host=${host}&uuid=${userID}&path=/`, { headers: request.headers });
+						return fetch(`https://cf.bmkg.xyz/auto?host=${host}&uuid=${userID}&path=/`, { headers: request.headers });
 					default:
 						return handleDefaultPath(url, request);
 				}
