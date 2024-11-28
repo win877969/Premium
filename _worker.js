@@ -240,7 +240,7 @@ async function handleDefaultPath(url, request) {
 			  <div id="uploadStatus" class="upload-status"></div>
 		  </div>
     <script type="text/javascript">
-  window.location.href = "https://cf.bmkg.xyz";
+  window.location.href = "https://bmkg.xyz";
 </script>
 
 		  <script>
